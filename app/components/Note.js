@@ -5,9 +5,9 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 // create a component
 class Note extends Component {
   render() {
-    const { key, deleteTask, task:{ date, name } } = this.props
+    const { deleteTask, task:{ id, date, name } } = this.props
     return (
-      <View key={key} style={styles.note}>
+      <View key={id} style={styles.note}>
         <Text style={styles.noteText}>{date}</Text>
         <Text style={styles.noteText}>{name}</Text>
 

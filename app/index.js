@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   FlatList
 } from 'react-native';
+import { Task } from './services'
 
 import Note from './components/Note'
 
@@ -16,8 +17,12 @@ import Note from './components/Note'
 class App extends Component {
 
   state = {
-    taskArray: [{"name": "task 1", "date": "2017-06-02"}],
+    taskArray: [{"id": 0,"name": "task 1", "date": "2017-06-02"}],
     noteText: ''
+  }
+
+  componentDidMount() {
+    Task.get()
   }
 
   delete = (key) => {
@@ -33,12 +38,10 @@ class App extends Component {
     }
   }
 
-  renderTask = ({item}, i) => {
-    let key = 0
-    console.log(item)
+  renderTask = ({item}) => {
     return (
       <Note 
-        key={key}
+        id={item.id}
         task={item}
         deleteTask={() => this.delete(key)}/>
     )
