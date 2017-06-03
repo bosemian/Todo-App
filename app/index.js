@@ -31,9 +31,10 @@ class App extends Component {
     })
   }
 
-  delete = (key) => {
-    this.state.taskArray.slice(key, 1)
-    this.setState({ tasksArray: this.state.tasksArray })
+  delete = (id) => {
+    Task.del('/tasks', id, () => {
+      this.loadTask()
+    })
   }
 
   addTask = () => {
@@ -51,7 +52,7 @@ class App extends Component {
       <Note 
         id={item.id}
         task={item}
-        deleteTask={() => this.delete(key)}/>
+        deleteTask={() => this.delete(item.id)}/>
     )
   }
 

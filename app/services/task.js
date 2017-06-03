@@ -29,7 +29,21 @@ const post = (url, note, cb) => {
     })
 }
 
+const del = (url, id, cb) => {
+  http.delete(`${url}/${id}`)
+    .then((res) => {
+      if (res.data) {
+        console.log('deleted success')
+        cb()
+      }
+    })
+    .catch((err) => {
+      throw err
+    })
+}
+
 export default {
   get,
-  post
+  post,
+  del
 }
