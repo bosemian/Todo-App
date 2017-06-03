@@ -16,10 +16,20 @@ const get = (url, cb) => {
     })
 }
 
-const posts = ({name}) => {
-  //http.post('/tasks', name)
+const post = (url, note, cb) => {
+  http.post(url, { name: note })
+    .then((res) => {
+      if (res.data) {
+        console.log('created success')
+        cb()
+      }
+    })
+    .catch((err) => {
+      throw err
+    })
 }
 
 export default {
-  get
+  get,
+  post
 }

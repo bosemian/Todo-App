@@ -22,10 +22,13 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.loadTask()
+  }
+
+  loadTask = () => {
     Task.get('/tasks', (data) => {
       this.setState({ tasksArray: data })
     })
-    
   }
 
   delete = (key) => {
@@ -35,9 +38,11 @@ class App extends Component {
 
   addTask = () => {
     if (this.state.noteText) {
-      
-      this.setState({ tasksArray: this.state.tasksArray })
-      this.setState({ noteText: '' })
+      const { noteText } = this.state
+      Task.post('/tasks', noteText, () => {
+        this.setState({ noteText: '' })
+        this.loadTask()
+      })
     }
   }
 
