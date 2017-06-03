@@ -17,23 +17,26 @@ import Note from './components/Note'
 class App extends Component {
 
   state = {
-    taskArray: [{"id": 0,"name": "task 1", "date": "2017-06-02"}],
+    tasksArray: null,
     noteText: ''
   }
 
   componentDidMount() {
-    Task.get()
+    Task.get('/tasks', (data) => {
+      this.setState({ tasksArray: data })
+    })
+    
   }
 
   delete = (key) => {
     this.state.taskArray.slice(key, 1)
-    this.setState({ taskArray: this.state.taskArray })
+    this.setState({ tasksArray: this.state.tasksArray })
   }
 
   addTask = () => {
     if (this.state.noteText) {
-      this.state.taskArray.push({ "name": this.state.noteText ,"date": "2017-06-02"})
-      this.setState({ taskArray: this.state.taskArray })
+      
+      this.setState({ tasksArray: this.state.tasksArray })
       this.setState({ noteText: '' })
     }
   }
@@ -47,12 +50,21 @@ class App extends Component {
     )
   }
 
+  renderItems = () => {
+    const { tasksArray } = this.state
+    if (tasksArray) {
+      const { items } = tasksArray
+      return (
+         <FlatList
+            data={items}
+            keyExtractor={item => item.id}
+            renderItem={this.renderTask} />
+      )
+    }
+  }
+
 
   render() {
-    const notes = this.state.taskArray.map((val, key) => {
-      return 
-    })
-
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -60,9 +72,7 @@ class App extends Component {
         </View>
 
         <View style={styles.scrollContainer}>
-          <FlatList
-            data={this.state.taskArray}
-            renderItem={this.renderTask} />
+          { this.renderItems() }
         </View>
 
         <View style={styles.footer}>
@@ -96,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderBottomWidth: 5,
-    borderBottomColor: "#DDD"
+    borderBottomColor: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)"
   },
   headerText: {
     color: "#FFF",
